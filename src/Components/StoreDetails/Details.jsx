@@ -23,8 +23,6 @@ const Details = () => {
     getDetails();
   }, []);
 
-  console.log(data);
-
   return (
     <Layout>
       {" "}
@@ -51,16 +49,35 @@ const Details = () => {
             <p className="text-gray-800">{data?.status}</p>
           </div>
           <div>
-            <p className="text-gray-600 font-semibold">Created At:</p>
-            <p className="text-gray-800">
-              {new Date(data?.createdAt).toLocaleString()}
-            </p>
-          </div>
-          <div>
-            <p className="text-gray-600 font-semibold">Updated At:</p>
-            <p className="text-gray-800">
-              {new Date(data?.updatedAt).toLocaleString()}
-            </p>
+            <h2 className="text-2xl font-semibold mb-2">Store Information</h2>
+            <div>
+              <p className="text-gray-600 font-semibold">Kitchen Name:</p>
+              <p className="text-gray-800">{data?.storeDetails.kitchenName}</p>
+            </div>
+            <div>
+              <p className="text-gray-600 font-semibold">Kitchen Address:</p>
+              <p className="text-gray-800">{data?.storeDetails.address}</p>
+            </div>
+            <div>
+              <p className="text-gray-600 font-semibold">
+                Kitchen Opening Time:
+              </p>
+              <p className="text-gray-800">
+                {data?.storeDetails.kitchenOpeningTime}
+              </p>
+            </div>
+            <div>
+              <p className="text-gray-600 font-semibold">
+                Kitchen Closing Time:
+              </p>
+              <p className="text-gray-800">
+                {data?.storeDetails.kitchenClosingTime}
+              </p>
+            </div>
+            <div>
+              <p className="text-gray-600 font-semibold">City</p>
+              <p className="text-gray-800">{data?.storeDetails.city}</p>
+            </div>
           </div>
         </div>
       </div>

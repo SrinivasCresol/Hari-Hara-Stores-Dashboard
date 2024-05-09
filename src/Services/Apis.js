@@ -19,7 +19,7 @@ export const forgotPasswordFunction = async (data) => {
   return await commonRequest("POST", `${BASE_URL}/forgot-password`, data);
 };
 
-//password-change
+// Password Change
 export const passwordChangeFunction = async (data, id, header) => {
   return await commonRequest(
     "POST",

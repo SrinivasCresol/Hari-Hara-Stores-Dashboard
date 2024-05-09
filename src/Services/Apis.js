@@ -12,3 +12,19 @@ export const loginFunction = async (data) => {
 export const getStoreDetailsFunction = async (id) => {
   return await commonRequest("GET", `${BASE_URL}/user/${id}`);
 };
+
+// Forgot Password
+
+export const forgotPasswordFunction = async (data) => {
+  return await commonRequest("POST", `${BASE_URL}/forgot-password`, data);
+};
+
+//password-change
+export const passwordChangeFunction = async (data, id, header) => {
+  return await commonRequest(
+    "POST",
+    `${BASE_URL}/password-change/${id}`,
+    data,
+    header
+  );
+};

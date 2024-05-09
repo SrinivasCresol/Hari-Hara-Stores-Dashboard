@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { MdOutlineMailOutline, MdVpnLock } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { loginFunction } from "../../Services/Apis";
 
@@ -141,11 +141,11 @@ export default function LoginAuth() {
               )}
             </div>
 
-            <div>
+            <Link to="/forgot-password">
               <small className="mb-2.5 block font-medium text-black dark:text-white underline float-end">
                 Forgot password?
               </small>
-            </div>
+            </Link>
 
             {serverError && (
               <div className="text-red-500 text-center">

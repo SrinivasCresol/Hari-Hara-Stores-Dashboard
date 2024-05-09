@@ -50,7 +50,7 @@ export default function SideMenu() {
         className="flex items-center space-x-2 py-[13px] px-[8px]"
         style={{ width: isOpen ? "300px" : "100px" }}
       >
-        <Link to="/dashboard">
+        <Link to="/details">
           <div className="flex items-center space-x-2">
             <img
               src={icon}

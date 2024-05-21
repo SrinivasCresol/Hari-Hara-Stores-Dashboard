@@ -33,7 +33,14 @@ const data = [
         id: 1,
         title: "Assigned Orders",
         icon: <FaBusinessTime />,
-        route: "/categories",
+        route: "/orders/accepted",
+        dropItems: false,
+      },
+      {
+        id: 2,
+        title: "Declined Orders",
+        icon: <FaBusinessTime />,
+        route: "/orders/declined",
         dropItems: false,
       },
     ],
@@ -43,17 +50,18 @@ const data = [
 export default function Header() {
   const { toggle, fullscreen } = useFullscreen();
   const navigate = useNavigate();
-
   const location = useLocation();
   const { pathname } = location;
+  const [isOpen, setIsOpen] = useState(false);
+  const ref = useClickOutside(() => setIsOpen(false));
 
   const handleClick = () => {
     sessionStorage.removeItem("token");
+    sessionStorage.removeItem("storeOwnerID");
+    sessionStorage.removeItem("storeID");
     navigate(`/`);
   };
 
-  const [isOpen, setIsOpen] = useState(false);
-  const ref = useClickOutside(() => setIsOpen(false));
   const handleNav = () => {
     setIsOpen(!isOpen);
   };

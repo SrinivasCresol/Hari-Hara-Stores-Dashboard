@@ -1,69 +1,54 @@
-import { useState } from "react";
-import { FaShoppingCart, FaUsers } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { FaShoppingCart } from "react-icons/fa";
 import Layout from "../Common/Layout";
 import PropTypes from "prop-types";
+import { notificationByStoreIDFunction } from "../../Services/Apis";
 
 export default function Cards() {
   const [loading, setLoading] = useState(false);
-  //   const [data, setData] = useState({
-  //     totalUser: 0,
-  //     totalNutritionists: 0,
-  //     totalNutritionistOrders: 0,
-  //     totalOrders: 0,
-  //   });
+  const [data, setData] = useState({
+    totalAcceptedOrders: 0,
+    totalDeclinedOrders: 0,
+    totalOrders: 0,
+  });
+  const storeID = sessionStorage.getItem("storeID");
 
-  // const fetchData = async () => {
-  //   try {
-  //     const [
-  //       usersResponse,
-  //       nutritionistsResponse,
-  //       nutritionistOrdersResponse,
-  //       ordersResponse,
-  //     ] = await Promise.all([
-  //       getUsersFunction(),
-  //       getNutritionistFunction(),
-  //       getNutritionistOrders(),
-  //       getUserOrders(),
-  //     ]);
+  const fetchData = async () => {
+    try {
+      const response = await notificationByStoreIDFunction(storeID);
+      if (response.status === 200) {
+        setData({
+          totalAcceptedOrders: response.data.acceptedOrders.length,
+          totalDeclinedOrders: response.data.declinedOrders.length,
+          totalOrders: response.data.allAssignedOrders.length,
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  //     setData({
-  //       totalUser: usersResponse.data.users.length,
-  //       totalNutritionists: nutritionistsResponse.data.allNutritionist.length,
-  //       totalNutritionistOrders:
-  //         nutritionistOrdersResponse.data.deliveredOrders.length,
-  //       totalOrders: ordersResponse.data.deliveredOrders.length,
-  //     });
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const cards = [
     {
-      icon: <FaUsers />,
-      name: "Total Users",
-      number: 15,
-    },
-    {
-      icon: <FaUsers />,
-      name: "Total Nutritionists",
-      number: 10,
-    },
-    {
-      icon: <FaShoppingCart />,
-      name: "Total Nutritionist Orders",
-      number: 20,
-    },
-    {
       icon: <FaShoppingCart />,
       name: "Total Orders",
-      number: 100,
+      number: data.totalOrders,
+    },
+    {
+      icon: <FaShoppingCart />,
+      name: "Total Accepted Orders",
+      number: data.totalAcceptedOrders,
+    },
+    {
+      icon: <FaShoppingCart />,
+      name: "Total Declined Orders",
+      number: data.totalDeclinedOrders,
     },
   ];
 

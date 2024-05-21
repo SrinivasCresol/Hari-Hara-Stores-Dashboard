@@ -1,12 +1,74 @@
 import { useEffect, useRef, useState } from "react";
 import { AiFillBell } from "react-icons/ai";
+import {
+  notificationByStoreIDFunction,
+  updateOrderStatusFunction,
+} from "../../Services/Apis";
+import { useNavigate } from "react-router-dom";
 
 export default function DropDownMessage() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const trigger = useRef(null);
   const dropdown = useRef(null);
+  const [notifications, setNotifications] = useState([]);
+  const navigate = useNavigate();
+  const storeID = sessionStorage.getItem("storeID");
+  const token = sessionStorage.getItem("token");
+  const headers = {
+    Authorization: `${token}`,
+  };
 
-  // close on click outside
+  const fetchNotifications = async () => {
+    try {
+      const response = await notificationByStoreIDFunction(storeID);
+      if (response.status === 200) {
+        setNotifications(response.data.pendingOrders);
+      }
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
+    }
+  };
+
+  const handleAccept = async (notificationID) => {
+    try {
+      await updateOrderStatusFunction(
+        notificationID,
+        {
+          newStatus: "Accepted",
+          newReadStatus: "Read",
+        },
+        headers
+      );
+      fetchNotifications();
+    } catch (error) {
+      console.error("Error accepting notification:", error);
+    }
+  };
+
+  const handleDecline = async (notificationID) => {
+    try {
+      await updateOrderStatusFunction(
+        notificationID,
+        {
+          newStatus: "Declined",
+          newReadStatus: "NotRead",
+        },
+        headers
+      );
+      fetchNotifications();
+    } catch (error) {
+      console.error("Error declining notification:", error);
+    }
+  };
+
+  const handleViewDetails = async (id) => {
+    navigate(`/order/details/${id}`);
+  };
+
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
+
   useEffect(() => {
     const clickHandler = ({ target }) => {
       if (!dropdown.current) return;
@@ -22,7 +84,6 @@ export default function DropDownMessage() {
     return () => document.removeEventListener("click", clickHandler);
   });
 
-  // close if the esc key is pressed
   useEffect(() => {
     const keyHandler = ({ keyCode }) => {
       if (!dropdownOpen || keyCode !== 27) return;
@@ -37,9 +98,14 @@ export default function DropDownMessage() {
       <button
         ref={trigger}
         onClick={() => setDropdownOpen(!dropdownOpen)}
-        className="cursor-pointer"
+        className="relative cursor-pointer"
       >
         <AiFillBell className="text-base" />
+        {notifications.length > 0 && (
+          <span className="absolute top-0 right-0 inline-flex items-center justify-center w-3 h-3 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
+            •
+          </span>
+        )}
       </button>
 
       <div
@@ -55,57 +121,51 @@ export default function DropDownMessage() {
         </div>
 
         <ul className="flex h-60 flex-col overflow-y-auto no-scrollbar">
-          <li>
-            <div className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-[#2E3A47] dark:hover:bg-meta-4">
-              <p className="text-sm">
-                <span className="text-black dark:text-white">
-                  Edit your information in a swipe
-                </span>{" "}
-                Sint occaecat cupidatat non proident, sunt in culpa qui officia
-                deserunt mollit anim.
-              </p>
-
-              <p className="text-xs">12 May, 2025</p>
-            </div>
-          </li>
-          <li>
-            <div className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-[#2E3A47] dark:hover:bg-meta-4">
-              <p className="text-sm">
-                <span className="text-black dark:text-white">
-                  It is a long established fact
-                </span>{" "}
-                that a reader will be distracted by the readable.
-              </p>
-
-              <p className="text-xs">24 Feb, 2025</p>
-            </div>
-          </li>
-          <li>
-            <div className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-[#2E3A47] dark:hover:bg-meta-4">
-              <p className="text-sm">
-                <span className="text-black dark:text-white">
-                  There are many variations
-                </span>{" "}
-                of passages of Lorem Ipsum available, but the majority have
-                suffered
-              </p>
-
-              <p className="text-xs">04 Jan, 2025</p>
-            </div>
-          </li>
-          <li>
-            <div className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-[#2E3A47] dark:hover:bg-meta-4">
-              <p className="text-sm">
-                <span className="text-black dark:text-white">
-                  There are many variations
-                </span>{" "}
-                of passages of Lorem Ipsum available, but the majority have
-                suffered
-              </p>
-
-              <p className="text-xs">01 Dec, 2024</p>
-            </div>
-          </li>
+          {notifications.length > 0 ? (
+            notifications.map((notification) => (
+              <li
+                key={notification._id}
+                className="border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-[#2E3A47] dark:hover:bg-meta-4"
+              >
+                <div className="flex flex-col gap-2.5">
+                  <p className="text-sm">
+                    <span className="text-black dark:text-white">
+                      {notification.message}
+                    </span>
+                  </p>
+                  <p className="text-xs">
+                    {new Date(notification.createdAt).toLocaleString()}
+                  </p>
+                  <div className="flex justify-end gap-2">
+                    <button
+                      className="bg-green-500 text-white px-2 py-1 rounded"
+                      onClick={() => handleAccept(notification.notificationID)}
+                    >
+                      Accept
+                    </button>
+                    <button
+                      className="bg-red-500 text-white px-2 py-1 rounded"
+                      onClick={() => handleDecline(notification.notificationID)}
+                    >
+                      Decline
+                    </button>
+                    <button
+                      className="bg-blue-500 text-white px-2 py-1 rounded"
+                      onClick={() =>
+                        handleViewDetails(notification.notificationID)
+                      }
+                    >
+                      View Details
+                    </button>
+                  </div>
+                </div>
+              </li>
+            ))
+          ) : (
+            <li className="border-t border-stroke px-4.5 py-3">
+              <p className="text-sm">No new notifications</p>
+            </li>
+          )}
         </ul>
       </div>
     </div>

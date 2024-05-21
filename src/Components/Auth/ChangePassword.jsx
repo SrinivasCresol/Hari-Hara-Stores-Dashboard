@@ -15,7 +15,7 @@ const ChangePassword = () => {
   const [loading, setLoading] = useState(false);
   const [oldPasswordError, setOldPasswordError] = useState();
 
-  const id = sessionStorage.getItem("userID");
+  const id = sessionStorage.getItem("storeOwnerID");
 
   const notifySuccess = () => {
     toast.success("Password Changed successfully!", {

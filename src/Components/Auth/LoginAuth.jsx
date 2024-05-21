@@ -42,7 +42,7 @@ export default function LoginAuth() {
         notifySuccess();
         sessionStorage.setItem("token", response.data.result.token);
         sessionStorage.setItem(
-          "userID",
+          "storeOwnerID",
           response.data.result.validateUser.userId
         );
         navigate("/dashboard");

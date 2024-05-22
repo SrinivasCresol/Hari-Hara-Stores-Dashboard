@@ -17,13 +17,9 @@ const Details = () => {
         const storeData = response?.data?.data;
         setData(storeData);
         setShowButton(!storeData?.storeDetails);
-
-        if (storeData?.storeDetails) {
-          sessionStorage.setItem("storeID", storeData.storeDetails._id);
-        }
       }
     } catch (error) {
-      console.error("Error fetching Users:", error);
+      console.error("Error fetching store details:", error);
     }
   };
 

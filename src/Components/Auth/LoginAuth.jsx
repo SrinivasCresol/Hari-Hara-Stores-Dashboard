@@ -3,13 +3,14 @@ import { useForm } from "react-hook-form";
 import { MdOutlineMailOutline, MdVpnLock } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import { loginFunction } from "../../Services/Apis";
+import { getStoreDetailsFunction, loginFunction } from "../../Services/Apis";
 
 export default function LoginAuth() {
   const [serverError, setServerError] = useState("");
   const [loading, setLoading] = useState(false);
   const [checking, setChecking] = useState(true);
   const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -45,6 +46,17 @@ export default function LoginAuth() {
           "storeOwnerID",
           response.data.result.validateUser.userId
         );
+        const id = sessionStorage.getItem("storeOwnerID");
+
+        const storeResponse = await getStoreDetailsFunction(id);
+
+        if (storeResponse.status === 200) {
+          const storeData = storeResponse?.data?.data;
+
+          if (storeData?.storeDetails) {
+            sessionStorage.setItem("storeID", storeData.storeDetails._id);
+          }
+        }
         navigate("/dashboard");
       } else {
         notifyError("Invalid Credentials, please verify them and retry");

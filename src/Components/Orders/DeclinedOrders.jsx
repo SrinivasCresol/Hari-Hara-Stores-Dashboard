@@ -41,24 +41,24 @@ export default function DeclinedOrders() {
       sortable: true,
       width: "70px",
     },
-    // {
-    //   name: "Name",
-    //   selector: (rows) => rows.userID.userDetails.name,
-    //   sortable: true,
-    //   width: "150px",
-    // },
-    // {
-    //   name: "Email",
-    //   selector: (rows) => rows.userID.email,
-    //   sortable: true,
-    //   width: "200px",
-    // },
-    // {
-    //   name: "Delivery Status",
-    //   selector: (rows) => rows.deliveryStatus,
-    //   sortable: true,
-    //   width: "150px",
-    // },
+    {
+      name: "Name",
+      selector: (rows) => rows.orderDetails.userID.userDetails.name,
+      sortable: true,
+      width: "150px",
+    },
+    {
+      name: "Email",
+      selector: (rows) => rows.orderDetails.userID.email,
+      sortable: true,
+      width: "200px",
+    },
+    {
+      name: "Delivery Status",
+      selector: (rows) => rows.orderDetails.deliveryStatus,
+      sortable: true,
+      width: "150px",
+    },
     {
       name: "Actions",
       selector: (rows) => (

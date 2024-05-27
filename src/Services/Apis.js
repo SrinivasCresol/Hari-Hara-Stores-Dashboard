@@ -62,3 +62,9 @@ export const updateOrderStatusFunction = async (
     header
   );
 };
+
+// All Orders
+
+export const allOrdersByOrderIDFunction = async (orderID) => {
+  return await commonRequest("GET", `${BASE_URL}/orders/${orderID}`);
+};

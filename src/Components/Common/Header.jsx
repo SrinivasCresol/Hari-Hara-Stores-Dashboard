@@ -31,13 +31,20 @@ const data = [
     dropItems: [
       {
         id: 1,
-        title: "Assigned Orders",
+        title: "Pending Orders",
+        icon: <FaBusinessTime />,
+        route: "/orders/pending",
+        dropItems: false,
+      },
+      {
+        id: 2,
+        title: "Accepted Orders",
         icon: <FaBusinessTime />,
         route: "/orders/accepted",
         dropItems: false,
       },
       {
-        id: 2,
+        id: 3,
         title: "Declined Orders",
         icon: <FaBusinessTime />,
         route: "/orders/declined",

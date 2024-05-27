@@ -7,6 +7,8 @@ import ForgotPassword from "./Components/Auth/ForgotPassword";
 import AddStore from "./Components/StoreDetails/AddStore";
 import DeclinedOrders from "./Components/Orders/DeclinedOrders";
 import AcceptedOrders from "./Components/Orders/AcceptedOrders";
+import PendingOrders from "./Components/Orders/PendingOrders";
+import ViewOrderDetails from "./Components/Orders/ViewOrderDetails";
 
 function App() {
   return (
@@ -20,6 +22,11 @@ function App() {
           <Route path="/add/store" element={<AddStore />} />
           <Route path="/orders/accepted" element={<AcceptedOrders />} />
           <Route path="/orders/declined" element={<DeclinedOrders />} />
+          <Route path="/orders/pending" element={<PendingOrders />} />
+          <Route
+            path="/order/details/:orderID"
+            element={<ViewOrderDetails />}
+          />
         </Route>
       </Routes>
     </>

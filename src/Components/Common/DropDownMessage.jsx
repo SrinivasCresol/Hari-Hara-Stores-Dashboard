@@ -151,9 +151,7 @@ export default function DropDownMessage() {
                     </button>
                     <button
                       className="bg-blue-500 text-white px-2 py-1 rounded"
-                      onClick={() =>
-                        handleViewDetails(notification.notificationID)
-                      }
+                      onClick={() => handleViewDetails(notification.orderID)}
                     >
                       View Details
                     </button>

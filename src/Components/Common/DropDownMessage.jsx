@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { AiFillBell } from "react-icons/ai";
-import {
-  notificationByStoreIDFunction,
-  updateOrderStatusFunction,
-} from "../../Services/Apis";
+import { notificationByStoreIDFunction } from "../../Services/Apis";
 import { useNavigate } from "react-router-dom";
 
 export default function DropDownMessage() {
@@ -13,10 +10,6 @@ export default function DropDownMessage() {
   const [notifications, setNotifications] = useState([]);
   const navigate = useNavigate();
   const storeID = sessionStorage.getItem("storeID");
-  const token = sessionStorage.getItem("token");
-  const headers = {
-    Authorization: `${token}`,
-  };
 
   const fetchNotifications = async () => {
     try {
@@ -26,38 +19,6 @@ export default function DropDownMessage() {
       }
     } catch (error) {
       console.error("Error fetching notifications:", error);
-    }
-  };
-
-  const handleAccept = async (notificationID) => {
-    try {
-      await updateOrderStatusFunction(
-        notificationID,
-        {
-          newStatus: "Accepted",
-          newReadStatus: "Read",
-        },
-        headers
-      );
-      fetchNotifications();
-    } catch (error) {
-      console.error("Error accepting notification:", error);
-    }
-  };
-
-  const handleDecline = async (notificationID) => {
-    try {
-      await updateOrderStatusFunction(
-        notificationID,
-        {
-          newStatus: "Declined",
-          newReadStatus: "NotRead",
-        },
-        headers
-      );
-      fetchNotifications();
-    } catch (error) {
-      console.error("Error declining notification:", error);
     }
   };
 
@@ -137,18 +98,6 @@ export default function DropDownMessage() {
                     {new Date(notification.createdAt).toLocaleString()}
                   </p>
                   <div className="flex justify-end gap-2">
-                    <button
-                      className="bg-green-500 text-white px-2 py-1 rounded"
-                      onClick={() => handleAccept(notification.notificationID)}
-                    >
-                      Accept
-                    </button>
-                    <button
-                      className="bg-red-500 text-white px-2 py-1 rounded"
-                      onClick={() => handleDecline(notification.notificationID)}
-                    >
-                      Decline
-                    </button>
                     <button
                       className="bg-blue-500 text-white px-2 py-1 rounded"
                       onClick={() => handleViewDetails(notification.orderID)}

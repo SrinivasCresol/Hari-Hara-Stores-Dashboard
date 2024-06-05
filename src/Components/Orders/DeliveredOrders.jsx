@@ -5,7 +5,7 @@ import { notificationByStoreIDFunction } from "../../Services/Apis";
 import BreadCrumb from "../Common/BreadCrumb";
 import Layout from "../Common/Layout";
 
-export default function AcceptedOrders() {
+export default function DeliveredOrders() {
   const [orders, setOrders] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -16,10 +16,10 @@ export default function AcceptedOrders() {
       const response = await notificationByStoreIDFunction(storeID);
 
       if (response.status === 200) {
-        setOrders(response.data.acceptedOrders);
+        setOrders(response.data.deliveredOrders);
       }
     } catch (error) {
-      console.error("Error fetching accepted orders:", error);
+      console.error("Error fetching declined orders:", error);
     }
   };
 
@@ -40,12 +40,6 @@ export default function AcceptedOrders() {
       selector: (row, index) => (currentPage - 1) * rowsPerPage + index + 1,
       sortable: true,
       width: "70px",
-    },
-    {
-      name: "Name",
-      selector: (rows) => rows.orderDetails.userID.userDetails.name,
-      sortable: true,
-      width: "150px",
     },
     {
       name: "Email",
@@ -77,7 +71,7 @@ export default function AcceptedOrders() {
   return (
     <Layout>
       <div className="2xl:px-28 xl:px-16 px-2 md:mt-8 mt-2 mb-5 space-y-6">
-        <BreadCrumb pageName="Accepted Orders" />
+        <BreadCrumb pageName="Delivered Orders" />
 
         <div className="p-4 bg-white rounded-lg shadow-md">
           <DataTable

@@ -48,21 +48,6 @@ export const notificationByStoreIDFunction = async (storeID) => {
   return await commonRequest("GET", `${BASE_URL}/notifications/get/${storeID}`);
 };
 
-// Update Order Accept Or Decline Status By NotificationID
-
-export const updateOrderStatusFunction = async (
-  notificationID,
-  data,
-  header
-) => {
-  return await commonRequest(
-    "PUT",
-    `${BASE_URL}/notifications/update/${notificationID}`,
-    data,
-    header
-  );
-};
-
 // All Orders
 
 export const allOrdersByOrderIDFunction = async (orderID) => {

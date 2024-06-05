@@ -38,16 +38,9 @@ const data = [
       },
       {
         id: 2,
-        title: "Accepted Orders",
+        title: "Delivered Orders",
         icon: <FaBusinessTime />,
-        route: "/orders/accepted",
-        dropItems: false,
-      },
-      {
-        id: 3,
-        title: "Declined Orders",
-        icon: <FaBusinessTime />,
-        route: "/orders/declined",
+        route: "/orders/delivered",
         dropItems: false,
       },
     ],

@@ -42,12 +42,6 @@ export default function PendingOrders() {
       width: "70px",
     },
     {
-      name: "Name",
-      selector: (rows) => rows.orderDetails.userID.userDetails.name,
-      sortable: true,
-      width: "150px",
-    },
-    {
       name: "Email",
       selector: (rows) => rows.orderDetails.userID.email,
       sortable: true,

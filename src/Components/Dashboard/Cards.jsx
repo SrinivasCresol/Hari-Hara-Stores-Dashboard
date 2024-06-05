@@ -7,8 +7,8 @@ import { notificationByStoreIDFunction } from "../../Services/Apis";
 export default function Cards() {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
-    totalAcceptedOrders: 0,
-    totalDeclinedOrders: 0,
+    totalPendingOrders: 0,
+    totalDeliveredOrders: 0,
     totalOrders: 0,
   });
   const storeID = sessionStorage.getItem("storeID");
@@ -18,8 +18,8 @@ export default function Cards() {
       const response = await notificationByStoreIDFunction(storeID);
       if (response.status === 200) {
         setData({
-          totalAcceptedOrders: response.data.acceptedOrders.length,
-          totalDeclinedOrders: response.data.declinedOrders.length,
+          totalPendingOrders: response.data.pendingOrders.length,
+          totalDeliveredOrders: response.data.deliveredOrders.length,
           totalOrders: response.data.allAssignedOrders.length,
         });
       }
@@ -42,13 +42,13 @@ export default function Cards() {
     },
     {
       icon: <FaShoppingCart />,
-      name: "Total Accepted Orders",
-      number: data.totalAcceptedOrders,
+      name: "Pending Orders",
+      number: data.totalPendingOrders,
     },
     {
       icon: <FaShoppingCart />,
-      name: "Total Declined Orders",
-      number: data.totalDeclinedOrders,
+      name: "Delivered Orders",
+      number: data.totalDeliveredOrders,
     },
   ];
 
